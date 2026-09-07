@@ -8,11 +8,18 @@ class Settings(BaseSettings):
     app_name: str = Field(default="ForgeOS", alias="APP_NAME")
     app_env: str = Field(default="development", alias="APP_ENV")
     debug: bool = Field(default=False, alias="DEBUG")
-    api_v1_prefix: str = Field(default="/api/v1", alias="API_V1_PREFIX")
+
+    api_v1_prefix: str = Field(
+        default="/api/v1",
+        alias="API_V1_PREFIX",
+    )
+
     database_url: str = Field(alias="DATABASE_URL")
     redis_url: str = Field(alias="REDIS_URL")
+
     backend_cors_origins: list[str] = Field(
-        default=["http://localhost:3000"], alias="BACKEND_CORS_ORIGINS"
+        default=["http://localhost:3000"],
+        alias="BACKEND_CORS_ORIGINS",
     )
 
     model_config = SettingsConfigDict(
@@ -25,7 +32,7 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    return Settings()  # type: ignore[call-arg]
 
 
 settings = get_settings()
