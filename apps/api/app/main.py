@@ -23,7 +23,7 @@ async def lifespan(app: FastAPI):  # type: ignore[no-untyped-def]
 
 app = FastAPI(
     title=settings.app_name,
-    version="0.1.0",
+    version="0.2.0",
     debug=settings.debug,
     lifespan=lifespan,
     docs_url="/docs",
@@ -44,4 +44,4 @@ app.include_router(api_router, prefix=settings.api_v1_prefix)
 
 @app.get("/")
 async def root() -> dict[str, str]:
-    return {"name": settings.app_name, "version": "0.1.0", "docs": "/docs"}
+    return {"name": settings.app_name, "version": "0.2.0", "docs": "/docs"}
