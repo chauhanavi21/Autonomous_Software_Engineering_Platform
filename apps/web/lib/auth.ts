@@ -1,0 +1,4 @@
+const API=process.env.NEXT_PUBLIC_API_URL??"http://localhost:8000/api/v1";
+export type User={id:string;email:string;display_name:string;is_active:boolean;is_verified:boolean};
+export async function register(input:{email:string;password:string;display_name:string}){const r=await fetch(`${API}/auth/register`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(input)});if(!r.ok)throw new Error((await r.json()).detail??"Registration failed");return r.json();}
+export async function login(input:{email:string;password:string}){const r=await fetch(`${API}/auth/login`,{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify(input)});if(!r.ok)throw new Error((await r.json()).detail??"Login failed");return r.json() as Promise<{access_token:string;user:User}>;}
