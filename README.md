@@ -1,56 +1,27 @@
-# ForgeOS — Phase 1
+# ForgeOS — Phase 2
 
-Phase 1 establishes the production-grade foundation for ForgeOS, an autonomous software engineering platform.
+Autonomous software-engineering platform foundation with identity, RBAC, organizations, workspaces, and tenant-aware projects.
 
-## Included
+## Stack
+Next.js, TypeScript, FastAPI, PostgreSQL, Redis, SQLAlchemy, Alembic, Docker Compose, Argon2, JWT, pytest, Ruff, mypy.
 
-- Next.js + TypeScript frontend
-- FastAPI async backend
-- PostgreSQL + SQLAlchemy 2.0
-- Redis
-- Alembic migrations
-- Repository + service layers
-- UUID primary keys and timestamped models
-- Request correlation IDs
-- Structured JSON logging
-- Centralized exception handling
-- API versioning
-- Liveness and readiness probes
-- Docker / Docker Compose
-- Ruff, mypy, pytest, pre-commit
-- GitHub Actions CI
-- Architecture decision records
+## Run
+1. `cp .env.example .env` (PowerShell: `Copy-Item .env.example .env`)
+2. Change `JWT_SECRET` in `.env` to a long random value.
+3. `docker compose up --build -d`
+4. `docker compose exec api alembic upgrade head`
+5. Open `http://localhost:3000/register` and `http://localhost:8000/docs`.
 
-## Quick start
+## Authentication flow
+Register -> login -> short-lived access JWT + HttpOnly refresh cookie -> protected `/auth/me` -> refresh rotation.
 
-```bash
-cp .env.example .env
-docker compose up --build
-```
+## Phase 2 APIs
+- `/api/v1/auth/register`, `/login`, `/refresh`, `/logout`, `/me`
+- `/api/v1/organizations`
+- `/api/v1/organizations/{id}/members`
+- `/api/v1/organizations/{id}/workspaces`
+- `/api/v1/workspaces/{id}/projects`
+- `/api/v1/projects/{id}`
 
-In another terminal:
-
-```bash
-docker compose exec api alembic upgrade head
-```
-
-Open:
-
-- Web: http://localhost:3000
-- API: http://localhost:8000
-- Swagger: http://localhost:8000/docs
-- Liveness: http://localhost:8000/api/v1/health/live
-- Readiness: http://localhost:8000/api/v1/health/ready
-
-## Tests
-
-```bash
-docker compose run --rm api pytest -q
-```
-
-## Quality checks
-
-```bash
-docker compose run --rm api ruff check .
-docker compose run --rm api mypy app
-```
+## Production note
+The localhost refresh cookie uses `secure=false`. Set secure cookies under HTTPS before a real deployment. OAuth provider configuration is represented by environment fields and architecture hooks but external OAuth callbacks are intentionally not enabled until real provider credentials are supplied.
