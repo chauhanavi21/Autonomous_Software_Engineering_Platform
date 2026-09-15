@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     github_client_secret: str | None = Field(default=None, alias="GITHUB_CLIENT_SECRET")
     google_client_id: str | None = Field(default=None, alias="GOOGLE_CLIENT_ID")
     google_client_secret: str | None = Field(default=None, alias="GOOGLE_CLIENT_SECRET")
+    openai_api_key: str | None = Field(default=None, alias="OPENAI_API_KEY")
+    anthropic_api_key: str | None = Field(default=None, alias="ANTHROPIC_API_KEY")
+    gemini_api_key: str | None = Field(default=None, alias="GEMINI_API_KEY")
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore")
 
 @lru_cache
