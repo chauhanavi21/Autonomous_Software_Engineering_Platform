@@ -7,3 +7,5 @@ from app.models.workspace import Workspace
 from app.models.project import Project, ProjectStatus
 from app.models.audit_event import AuditEvent
 __all__=["SystemEvent","User","RefreshToken","Organization","OrganizationMembership","Role","Workspace","Project","ProjectStatus","AuditEvent"]
+from app.models.agent import AgentDefinition  # noqa: F401
+from app.models.agent_execution import AgentExecution  # noqa: F401
